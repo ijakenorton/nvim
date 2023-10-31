@@ -1,5 +1,5 @@
 local lsp = require("lsp-zero")
-
+    
 lsp.preset("recommended")
 
 lsp.ensure_installed({
@@ -23,6 +23,8 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
 
+--vim.api.nvim_set_keymap('i', '<Tab>', '<Tab>', {noremap = true, silent = true})
+--vim.api.nvim_set_keymap('i', '<Tab>', '\\<Tab>', {})
 lsp.setup_nvim_cmp({
   mapping = cmp_mappings
 })
