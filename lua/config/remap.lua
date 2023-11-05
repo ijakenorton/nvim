@@ -4,7 +4,7 @@ vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 vim.keymap.set("i", "<Tab>", "")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-
+vim.keymap.set("i", "jj", "<Esc>", {noremap = true, silent = true})
 vim.api.nvim_set_keymap('i', '<Tab>', '<Tab>', {noremap = true, silent = true})
 vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")

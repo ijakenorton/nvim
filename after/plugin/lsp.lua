@@ -23,8 +23,6 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
 
---vim.api.nvim_set_keymap('i', '<Tab>', '<Tab>', {noremap = true, silent = true})
---vim.api.nvim_set_keymap('i', '<Tab>', '\\<Tab>', {})
 lsp.setup_nvim_cmp({
   mapping = cmp_mappings
 })
@@ -52,8 +50,10 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
   vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
   vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+vim.keymap.set({'n', 'x'}, 'gq', function()
+    vim.lsp.buf.format({async = false, timeout_ms = 10000})
+  end, opts)
 end)
-
 lsp.setup()
 
 vim.diagnostic.config({
