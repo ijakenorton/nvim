@@ -5,6 +5,7 @@ lsp.preset("recommended")
 lsp.ensure_installed({
   'tsserver',
   'rust_analyzer',
+  'gopls'
 })
 
 -- Fix Undefined global 'vim'
@@ -28,7 +29,7 @@ lsp.setup_nvim_cmp({
 })
 
 lsp.set_preferences({
-    suggest_lsp_servers = false,
+    suggest_lsp_servers = true,
     sign_icons = {
         error = 'E',
         warn = 'W',
@@ -36,7 +37,16 @@ lsp.set_preferences({
         info = 'I'
     }
 })
-
+lsp.format_on_save({
+  format_opts = {
+    async = false,
+    timeout_ms = 10000,
+  },
+  servers = {
+    ['tsserver'] = {'javascript', 'typescript'},
+    ['gopls'] = {'go'},
+  }
+})
 lsp.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr, remap = false}
 
@@ -49,13 +59,12 @@ lsp.on_attach(function(client, bufnr)
   vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
   vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
   vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-  vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 vim.keymap.set({'n', 'x'}, 'gq', function()
     vim.lsp.buf.format({async = false, timeout_ms = 10000})
   end, opts)
 end)
 lsp.setup()
-
+lsp.setup_servers({'lua_ls', 'gopls'})
 vim.diagnostic.config({
     virtual_text = true
 })

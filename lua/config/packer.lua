@@ -22,7 +22,9 @@ return require('packer').startup(function(use)
 use( 'nvim-treesitter/nvim-treesitter',{run = ':TSUpdate'})
 use('theprimeagen/harpoon')
 use('mbbill/undotree')
+use('jose-elias-alvarez/null-ls.nvim')
 use('tpope/vim-fugitive')
+use('tpope/vim-commentary')
   use {
 	  'VonHeikemen/lsp-zero.nvim',
 	  branch = 'v1.x',
