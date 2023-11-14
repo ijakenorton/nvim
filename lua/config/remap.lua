@@ -11,7 +11,13 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
+--helper functions with brackets and quotes
+vim.api.nvim_set_keymap('i', '((', '()<Left>', {noremap = true})
+vim.api.nvim_set_keymap('i', '""', '""<Left>', {noremap = true})
+vim.api.nvim_set_keymap('i', '``', '``<Left>', {noremap = true})
+vim.api.nvim_set_keymap('i', "''", "''<Left>", {noremap = true})
 vim.api.nvim_set_keymap('i', '{{', '{}<Left><CR><Esc>O<Tab>', {noremap = true})
+vim.api.nvim_set_keymap('i', '[[', '[]<Left>', {noremap = true})
 -- greatest remap ever
 vim.keymap.set("x", "<leader>p", [["_dP]])
 -- next greatest remap ever : asbjornHaland
