@@ -1,5 +1,10 @@
 vim.opt.guicursor = ""
 
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+-- set termguicolors to enable highlight groups
+vim.opt.termguicolors = true
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -27,5 +32,8 @@ vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
-
+-- vim.g.netrw_winsize = 25
+-- vim.g.netrw_browse_split = 4
+-- vim.g.netrw_liststyle = 3
 --vim.opt.colorcolumn = "80"
+--
