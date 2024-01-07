@@ -1,0 +1,25 @@
+-- Function to get the text of the visual selection
+-- global function get_visual_selection()
+--     local _, start_line, start_col, _ = unpack(vim.fn.getpos("'<"))
+--     local _, end_line, end_col, _ = unpack(vim.fn.getpos("'>"))
+--     if start_line == end_line then
+--         return vim.fn.getline(start_line):sub(start_col, end_col)
+--     else
+--         local lines = vim.fn.getline(start_line, end_line)
+--         lines[1] = lines[1]:sub(start_col)
+--         lines[#lines] = lines[#lines]:sub(1, end_col)
+--         return table.concat(lines, "\n")
+--     end
+-- end
+
+-- Function to wrap the visual selection with quotes
+-- local function wrap_with_quotes()
+--     local selection = get_visual_selection()
+--     local wrapped = '"' .. selection .. '"'
+--     -- Replace the visual selection with the wrapped text
+--     vim.api.nvim_command('normal gvc')
+--     vim.api.nvim_put({wrapped}, '', false, true)
+-- end
+
+-- -- Mapping the function to a key in visual mode
+-- vim.api.nvim_set_keymap('x', '"', ':lua wrap_with_quotes()<CR>', {noremap = true, silent = true})

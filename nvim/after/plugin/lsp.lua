@@ -49,6 +49,7 @@ lsp.format_on_save({
         ['jsonls'] = { 'json' }
     }
 })
+ 
 lsp.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
@@ -58,13 +59,17 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
     vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
     vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-    vim.keymap.set("n", "<C-.>", function() vim.lsp.buf.code_action() end, opts)
+    vim.keymap.set("n", "<leader>ac", function() vim.lsp.buf.code_action() end, opts)
     vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
     vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set({ 'n', 'x' }, 'gq', function()
         vim.lsp.buf.format({ async = false, timeout_ms = 10000 })
     end, opts)
+    -- vim.diagnostic.config({
+    --     virtual_text = false,
+    -- })
 end)
+
 lsp.setup()
 require('lspconfig').lua_ls.setup({
     settings = {
@@ -75,6 +80,7 @@ require('lspconfig').lua_ls.setup({
         }
     }
 })
+
 require('lspconfig').tsserver.setup({
     on_attach = lsp.on_attach,
     capabilities = lsp.capabilities,
@@ -88,17 +94,27 @@ require('lspconfig').tsserver.setup({
 
 local null_ls = require('null-ls')
 local null_opts = lsp.build_options('null-ls', {})
-
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 null_ls.setup({
-    on_attach = function(client, bufnr)
-        null_opts.on_attach(client, bufnr)
-        ---
-        -- you can add other stuff here....
-        ---
-    end,
+on_attach = function(current_client, bufnr)
+    if current_client.supports_method("textDocument/formatting") then
+      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = augroup,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.format({
+            filter = function(client)
+              --  only use null-ls for formatting instead of lsp server
+              return client.name == "null-ls"
+            end,
+            bufnr = bufnr,
+          })
+        end,
+      })
+    end
+  end,
     sources = {
-        -- Replace these with the tools you have installed
-        null_ls.builtins.diagnostics.eslint,
         null_ls.builtins.formatting.prettier,
     }
 })
@@ -108,35 +124,18 @@ lsp.setup_servers({ 'gopls' })
 vim.diagnostic.config({
     virtual_text = true
 })
---autosave for eslint
 
 -- local function eslintFixAll()
---     vim.cmd("EslintFixAll")
+--     -- Get the current buffer's file type
+--     local filetype = vim.bo.filetype
+--     -- Check if the filetype is one of the specified types
+--     if filetype == "javascript" or filetype == "typescript" then
+--         -- Run EslintFixAll if the filetype matches
+--         vim.cmd("EslintFixAll")
+--     end
 -- end
 
 -- vim.api.nvim_create_autocmd("BufWritePre", {
---     pattern = { "*.js", "*.jsx", "*.ts", "*.tsx" },
+--     pattern = "*", -- Apply to all files
 --     callback = eslintFixAll,
 -- })
-local function eslintFixAll()
-    -- Get the current buffer's file type
-    local filetype = vim.bo.filetype
-    -- Check if the filetype is one of the specified types
-    if filetype == "javascript" or  filetype == "typescript"  then
-        -- Run EslintFixAll if the filetype matches
-        vim.cmd("EslintFixAll")
-    end
-end
-
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*",  -- Apply to all files
-    callback = eslintFixAll,
-})
-
-
-
-
-
-
-
-

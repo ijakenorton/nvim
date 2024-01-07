@@ -1,7 +1,11 @@
-require 'nvim-treesitter.configs'.setup {
+local status, treesitter = pcall(require, "nvim-treesitter.configs")
+if not status then
+    return
+end
+treesitter.setup {
 
     -- A list of parser names, or "all" (the five listed parsers should always be installed)
-    ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "angular" },
+    ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "javascript", "typescript", "angular", "html", "bash", "json" , "vim"},
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -14,7 +18,8 @@ require 'nvim-treesitter.configs'.setup {
 
     ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
     -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
-
+    indent = { enable = true },
+    autotag = { enable = true },
     highlight = {
         enable = true,
 
